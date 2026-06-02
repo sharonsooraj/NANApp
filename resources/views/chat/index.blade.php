@@ -204,11 +204,12 @@
                 <div class="chat-header">
 
                     <img src="https://i.pravatar.cc/100?img={{ $selectedUser->id }}">
+                    <h6>{{ $selectedUser->name }}</h6>
 
-                    <div>
+                    {{-- <div>
                         <h6 class="mb-0">{{ $selectedUser->name }}</h6>
                         <small class="text-success">Online</small>
-                    </div>
+                    </div> --}}
 
                 </div>
 
@@ -253,23 +254,21 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
     <script type="module">
+        window.Echo.channel(
+                'chat.' + $('#conversation_id').val()
+            )
+            .listen('MessageSent', (e) => {
 
-    window.Echo.channel(
-        'chat.' + $('#conversation_id').val()
-    )
-    .listen('MessageSent', (e) => {
+                console.log(e);
 
-        console.log(e);
-
-        $('#chatBody').append(`
+                $('#chatBody').append(`
             <div class="message received">
                 ${e.message.message}
             </div>
         `);
 
-    });
-
-</script>
+            });
+    </script>
 
     <script>
         $('#messageForm').submit(function(e) {

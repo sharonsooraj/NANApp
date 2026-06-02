@@ -15,7 +15,18 @@ class ChatController extends Controller
     {
         $users = User::where('id', '!=', auth()->id())->get();
 
-        return view('chat.index', compact('users'));
+        $selectedUser = $users->first();
+
+        if (!$selectedUser) {
+            return view('chat.index', [
+                'users' => [],
+                'messages' => [],
+                'conversation' => null,
+                'selectedUser' => null
+            ]);
+        }
+
+        return redirect('/chat/' . $selectedUser->id);
     }
 
     public function show(User $user)
