@@ -201,17 +201,26 @@
             <!-- RIGHT PANEL -->
             <div class="col-md-8 p-0">
 
-                <div class="chat-header">
+                @if ($selectedUser)
+                    <div class="chat-header">
 
-                    <img src="https://i.pravatar.cc/100?img={{ $selectedUser->id }}">
-                    <h6>{{ $selectedUser->name }}</h6>
+                        <img src="https://i.pravatar.cc/100?img={{ $selectedUser->id }}">
 
-                    {{-- <div>
-                        <h6 class="mb-0">{{ $selectedUser->name }}</h6>
-                        <small class="text-success">Online</small>
-                    </div> --}}
+                        <div>
+                            <h6>{{ $selectedUser->name }}</h6>
+                            <small class="text-success">Online</small>
+                        </div>
 
-                </div>
+                    </div>
+                @else
+                    <div class="d-flex justify-content-center align-items-center h-100">
+                        <div class="text-center">
+                            <h3>Welcome to NANApp</h3>
+                            <p>No users available yet.</p>
+                            <p>Register another account to start chatting.</p>
+                        </div>
+                    </div>
+                @endif
 
                 <div class="chat-body" id="chatBody">
 
