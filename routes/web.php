@@ -24,6 +24,12 @@ Route::middleware('auth')->group(function () {
         '/send-message',
         [ChatController::class, 'sendMessage']
     );
+
+    Route::delete('/chat/delete/{conversation}', [
+        ChatController::class,
+        'deleteConversation'
+
+    ])->name('chat.delete');
 });
 
 require __DIR__ . '/auth.php';

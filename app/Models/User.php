@@ -22,7 +22,20 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'is_online',
+        'last_seen',
     ];
+
+    protected $casts = [
+
+        'email_verified_at' => 'datetime',
+
+        'last_seen' => 'datetime',
+
+        'is_online' => 'boolean',
+
+    ];
+
 
     /**
      * The attributes that should be hidden for serialization.

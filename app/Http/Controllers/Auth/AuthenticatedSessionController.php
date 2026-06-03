@@ -8,6 +8,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Events\UserStatusChanged;
+use App\Models\User;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -26,16 +28,57 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
 
+        auth()->user()->update([
+
+            'is_online' => true,
+
+            'last_seen' => now()
+
+        ]);
+
+        broadcast(new UserStatusChanged(
+
+            auth()->id(),
+
+            true
+
+        ));
+
         $request->session()->regenerate();
 
-       return redirect('/chat');
+        return redirect('/chat');
     }
+
 
     /**
      * Destroy an authenticated session.
      */
+
     public function destroy(Request $request): RedirectResponse
     {
+        $userId = auth()->id();
+
+        $user = User::find($userId);
+
+        if ($user) {
+
+            $user->update([
+
+                'is_online' => false,
+
+                'last_seen' => now()
+
+            ]);
+
+            broadcast(new UserStatusChanged(
+
+                $userId,
+
+                false
+
+            ));
+        }
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
